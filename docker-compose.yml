@@ -27,7 +27,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=iot_db
     ports:
-      - "5432:5432"
+      - "5555:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -44,6 +44,15 @@ services:
     volumes:
       - mosquitto_data:/mosquitto/data
       - mosquitto_log:/mosquitto/log
+
+  simulator:
+    build: 
+      context: ./backend
+    command: python simulator.py
+    environment:
+      - MQTT_BROKER_URL=mqtt
+    depends_on:
+      - mqtt
 
 volumes:
   pgdata:
